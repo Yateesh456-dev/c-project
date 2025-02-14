@@ -1,0 +1,253 @@
+First page code
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace hotelregpage
+{
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            string firstname=TextBox1.Text;
+            string lastname = TextBox2.Text;
+            string username = TextBox3.Text;
+            string gender = DropDownList1.SelectedItem.Text;
+            string password = TextBox4.Text;
+            string confirmpassword = TextBox5.Text;
+            string email = TextBox6.Text;
+            string mobile = TextBox7.Text;
+            string age = TextBox8.Text;
+            string adress = TextBox9.Text;
+            string country = DropDownList2.SelectedItem.Text;
+            string language = string.Empty;
+            if (CheckBox1.Checked == true)
+            {
+                language = language+ CheckBox1.Text+",";
+            }
+            if (CheckBox2.Checked == true)
+            {
+                language= language+CheckBox2.Text+",";
+            }
+            if (CheckBox3.Checked == true)
+            {
+                language=language+CheckBox3.Text+",";
+            }
+            SqlConnection conn = new SqlConnection("Data Source = .; database=reg; integrated security=yes");
+            conn.Open();
+            string query="insert into rege values('" + firstname + " ',' " +lastname+ " ',' " +username+ " ',' " +gender+ " ',' " +password+ " ',' " +confirmpassword+ " ',' " +email+ " ',' " +mobile+ " ',' " +age+ " ',' " +adress+ " ',' " +country+ " ',' " +language+ " ')";
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            Response.Redirect("WebForm2.aspx");
+        }
+
+        protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void DropDownList2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
+
+
+second page code
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace hotelregpage
+{
+    public partial class WebForm2 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("WebForm3.aspx");
+        }
+    }
+}
+
+Third page code
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace hotelregpage
+{
+    public partial class WebForm3 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            string username = TextBox1.Text;
+            string password = string.Empty;
+            SqlConnection conn = new SqlConnection("Data Source=.;database=reg;integrated security=yes");
+            conn.Open();
+            string query = "select password from rege where username=' " + username + " '";
+            SqlCommand cmd = new SqlCommand(query,conn);
+            password = cmd.ExecuteScalar().ToString();
+            if (password == TextBox2.Text)
+            {
+                Label3.Text = "welcome" + username;
+            }
+           
+            conn.Close();
+            Response.Redirect("WebForm4.aspx");
+        }
+    }
+}
+
+Fourth page code
+
+using System;
+using System.Collections.Generic;
+using System.EnterpriseServices.CompensatingResourceManager;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace hotelregpage
+{
+    public partial class WebForm4 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("WebForm5.aspx");
+        }
+    }
+}
+
+Fifth page
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace hotelregpage
+{
+    public partial class WebForm5 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            string username = TextBox1.Text;
+            string roomtype = string.Empty;
+            string amenities= string.Empty;
+            if (RadioButton1.Checked == true)
+            {
+                roomtype = roomtype + RadioButton1.Text;
+            }
+            else if (RadioButton2.Checked == true)
+            {
+                roomtype=roomtype + RadioButton2.Text;
+            }
+            if(CheckBox1.Checked == true)
+            {
+                amenities = amenities + CheckBox1.Text+",";
+            }
+            if (CheckBox2.Checked == true)
+            {
+                amenities=amenities + CheckBox2.Text;
+            }
+            SqlConnection con = new SqlConnection("Data Source =.;database=reg;integrated security=yes");
+            con.Open();
+            string query = "insert into hreg values(' " + username + " ',' " + roomtype + " ',' " + amenities + " ')";
+            SqlCommand cmd = new SqlCommand(query,con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+            Response.Redirect("WebForm6.aspx?user="+TextBox1.Text+"&type="+roomtype+"&a="+amenities);
+            
+        }
+    }
+}
+
+sixth page code
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace hotelregpage
+{
+    public partial class WebForm6 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            Label1.Text = "Welcome to  "+Request.QueryString["user"]+" your room type is "+ Request.QueryString["type"]+" you have choosen"+ Request.QueryString["a"];
+
+        }
+    }
+}
+
+seventh page code
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace hotelregpage
+{
+    public partial class WebForm6 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            Label1.Text = "Welcome to  "+Request.QueryString["user"]+" your room type is "+ Request.QueryString["type"]+" you have choosen"+ Request.QueryString["a"];
+
+        }
+    }
+}
